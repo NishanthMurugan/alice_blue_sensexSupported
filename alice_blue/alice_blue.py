@@ -555,7 +555,7 @@ class AliceBlue:
                     "nse_fo"    : "NFO",
                     "mcx_fo"    : "MCX",
                     "cde_fo"    : "CDS",
-                    "mcx_sx"    : "BFO",
+                    "bse_fo"    : "BFO",
                     "bcs_fo"    : "BCD",
                     "nse_com"   : "NCO",
                     "bse_com"   : "BCO"}
@@ -605,7 +605,7 @@ class AliceBlue:
         if(product_type == ProductType.Intraday):
             prod_type = 'MIS'
         elif(product_type == ProductType.Delivery):
-            if(exchange == 'NFO') or (exchange == 'MCX') or (exchange == 'CDS'):
+            if(exchange == 'NFO') or (exchange == 'MCX') or (exchange == 'CDS') or (exchange == 'BFO'):
                 prod_type = 'NRML'
             else:
                 prod_type = 'CNC'
@@ -966,7 +966,8 @@ class AliceBlue:
         
                     # convert expiry to none if it's non-existent
                     if("expiry_date" in scrip):
-                        expiry = datetime.datetime.fromtimestamp(scrip['expiry_date']/1000, tz=pytz.utc).date()
+                        if scrip['expiry_date'] is not None:
+                            expiry = datetime.datetime.fromtimestamp(scrip['expiry_date']/1000, tz=pytz.utc).date()
                     else:
                         expiry = None
         
@@ -1012,3 +1013,4 @@ class AliceBlue:
         elif http_method is Requests.GET:
             r = requests.get(url, headers=headers)
         return r
+
